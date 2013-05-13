@@ -1,10 +1,18 @@
 <?php
 
-// var_dump(db_backup::checkDependencies());
+$dependencies = db_backup::checkDependencies();
 
-// var_dump(db_backup::validateDataDir());
+$body = '';
 
-$body = '<pre>';
+$body .= '<ul>';
+if ($dependencies) {
+	$body .= '<li class="elgg-message elgg-state-success">' . elgg_echo('db_backup:cli:dependencies:ok') . '</li>';
+} else {
+	$body .= '<li class="elgg-message elgg-state-error">' . elgg_echo('db_backup:cli:dependencies:fail') . '</li>';
+}
+$body .= '</ul>';
+
+$body .= '<pre>';
 $body .= trim(db_backup::execSystemCommand('mysqldump -V', $code));
 $body .= '</pre>';
 $body .= '<pre>';
