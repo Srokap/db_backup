@@ -3,6 +3,7 @@ $english = array(
 	'admin:backup' => 'Backup',
 	'admin:backup:database' => 'Database backup',
 	'db_backup:cli' => 'CLI tools',
+	'db_backup:backup' => 'Backup',
 	'db_backup:restore' => 'Restore',
 	'db_backup:restore:backup_file' => 'Choose backup file to restore from: ',
 	'db_backup:button:quick' => 'Backup DB',

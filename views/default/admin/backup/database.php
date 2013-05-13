@@ -15,3 +15,10 @@ echo elgg_view_module('aside', elgg_echo('db_backup:cli'), $body);
 
 echo elgg_view_module('aside', elgg_echo('db_backup:restore'), 
 	elgg_view_form('backup/db/load'));
+
+$body = '<p><br />' . elgg_view('output/url', array(
+	'href' => elgg_add_action_tokens_to_url(elgg_normalize_url('action/backup/db/save')),
+	'text' => elgg_echo('db_backup:button:quick'),
+	'class' => 'elgg-button elgg-button-submit',
+)) . '</p>';
+echo elgg_view_module('aside', elgg_echo('db_backup:backup'), $body);
