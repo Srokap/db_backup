@@ -11,6 +11,8 @@ class db_backup {
 		
 		elgg_register_action('backup/db/save', 
 			elgg_get_config('pluginspath') . __CLASS__ . '/actions/backup/db/save.php', 'admin');
+		elgg_register_action('backup/db/load', 
+			elgg_get_config('pluginspath') . __CLASS__ . '/actions/backup/db/load.php', 'admin');
 	}
 	
 	/**
@@ -29,6 +31,7 @@ class db_backup {
 	
 	/**
 	 * Fired on admin_control_panel menu registration
+	 * 
 	 * @param string $hook
 	 * @param string $type
 	 * @param array $menu
@@ -85,7 +88,32 @@ class db_backup {
 	}
 	
 	/**
+	 * @throws RuntimeException
+	 * @return bool
+	 */
+	static function doRestore($fileName) {
+		if (!self::checkDependencies()) {
+			throw new RuntimeException("Missing CLI tools access");
+		}
+		
+		$time = time();
+		
+		$fileName = str_replace(array('../', '/'), array('', ''), $fileName);
+		$filePath = self::getDataDir() . $fileName;
+		
+		$cmd = "mysql -u " . escapeshellcmd(elgg_get_config('dbuser')) 
+			. (elgg_get_config('dbpass') ? " -p" . escapeshellcmd(elgg_get_config('dbpass')) : '') 
+			. " " . escapeshellcmd(elgg_get_config('dbname')) 
+			. " < " . escapeshellcmd($filePath);
+		
+		self::execSystemCommand($cmd, $code);
+		
+		return $code == 0;
+	}
+	
+	/**
 	 * Executes system command when possible
+	 * 
 	 * @param string $cmd
 	 * @param int $return_code
 	 */
@@ -139,6 +167,11 @@ class db_backup {
 		return is_writable($path);
 	}
 	
+	/**
+	 * Returns iterator over existing backup files
+	 * 
+	 * @return RegexIterator
+	 */
 	static function getBackupsFileIterator() {
 		$i = new DirectoryIterator(self::getDataDir());
 		$i = new RegexIterator($i, "/.*\.sql/");
