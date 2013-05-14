@@ -56,6 +56,16 @@ class db_backup {
 	protected static $fileName;
 	
 	/**
+	 * @var int
+	 */
+	protected static $errorCode;
+	
+	/**
+	 * @var string
+	 */
+	protected static $errorMessage;
+	
+	/**
 	 * @return string
 	 */
 	public static function getLastBackupFileName() {
@@ -81,10 +91,14 @@ class db_backup {
 			. (elgg_get_config('dbpass') ? " -p" . escapeshellcmd(elgg_get_config('dbpass')) : '') 
 			. " " . escapeshellcmd(elgg_get_config('dbname')) 
 			. " > " . escapeshellcmd($filePath);
-		
-		self::execSystemCommand($cmd, $code);
-		
-		return $code == 0;
+
+		self::$errorMessage = self::execSystemCommand($cmd, self::$errorCode);
+
+		if (self::$errorCode != 0) {
+			unlink($filePath);
+		}
+
+		return self::$errorCode == 0;
 	}
 	
 	/**
@@ -95,20 +109,24 @@ class db_backup {
 		if (!self::checkDependencies()) {
 			throw new RuntimeException("Missing CLI tools access");
 		}
-		
-		$time = time();
-		
+
 		$fileName = str_replace(array('../', '/'), array('', ''), $fileName);
 		$filePath = self::getDataDir() . $fileName;
-		
+
+		if (!file_exists($filePath)) {
+			self::$errorCode = -1;
+			self::$errorMessage = "Source file does not exist!";
+			return false;
+		}
+
 		$cmd = "mysql -u " . escapeshellcmd(elgg_get_config('dbuser')) 
 			. (elgg_get_config('dbpass') ? " -p" . escapeshellcmd(elgg_get_config('dbpass')) : '') 
 			. " " . escapeshellcmd(elgg_get_config('dbname')) 
 			. " < " . escapeshellcmd($filePath);
 		
-		self::execSystemCommand($cmd, $code);
+		self::$errorMessage = self::execSystemCommand($cmd, self::$errorCode);
 		
-		return $code == 0;
+		return self::$errorCode == 0;
 	}
 	
 	/**
@@ -154,6 +172,20 @@ class db_backup {
 	 */
 	static function getDataDir() {
 		return elgg_get_config('dataroot') . 'db_backup/';
+	}
+	
+	/**
+	 * @return int
+	 */
+	static function getErrorCode() {
+		return self::$errorCode;
+	}
+	
+	/**
+	 * @return string
+	 */
+	static function getErrorMessage() {
+		return self::$errorMessage;
 	}
 	
 	/**
