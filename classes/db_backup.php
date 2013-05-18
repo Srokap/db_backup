@@ -89,6 +89,7 @@ class db_backup {
 		
 		$cmd = "mysqldump -u " . escapeshellcmd(elgg_get_config('dbuser')) 
 			. (elgg_get_config('dbpass') ? " -p" . escapeshellcmd(elgg_get_config('dbpass')) : '') 
+			. " -h " . escapeshellcmd(elgg_get_config('dbhost')) 
 			. " " . escapeshellcmd(elgg_get_config('dbname')) 
 			. " > " . escapeshellcmd($filePath);
 
@@ -121,6 +122,7 @@ class db_backup {
 
 		$cmd = "mysql -u " . escapeshellcmd(elgg_get_config('dbuser')) 
 			. (elgg_get_config('dbpass') ? " -p" . escapeshellcmd(elgg_get_config('dbpass')) : '') 
+			. " -h " . escapeshellcmd(elgg_get_config('dbhost')) 
 			. " " . escapeshellcmd(elgg_get_config('dbname')) 
 			. " < " . escapeshellcmd($filePath);
 		
