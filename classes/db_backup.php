@@ -19,13 +19,21 @@ class db_backup {
 	 * Fired on system pagesetup
 	 */
 	static function pagesetup() {
+		$parent_id = 'administer_utilities';
+		$section = 'administer';
+		
+		// make sure parent is registered
+		if ($parent_id && !elgg_is_menu_item_registered('page', $parent_id)) {
+			elgg_register_admin_menu_item($section, $parent_id);
+		}
+		
 		elgg_register_menu_item('page', array(
 			'name' => 'backup/database',
 			'href' => 'admin/backup/database',
 			'text' => elgg_echo('admin:backup:database'),
 			'context' => 'admin',
-			'parent_name' => 'administer_utilities',
-			'section' => 'administer',
+			'parent_name' => $parent_id,
+			'section' => $section,
 		));
 	}
 	
