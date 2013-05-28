@@ -14,5 +14,8 @@ $english = array(
 	'db_backup:action:backup:fail' => 'There was error while making backup. Error %d: %s',
 	'db_backup:action:restore:ok' => 'Successfully restored database from file: %s',
 	'db_backup:action:restore:fail' => 'There was error while restoring database. Error %d: %s',
+	'db_backup:backup_file:group:scheduled' => 'Backups created locally',
+	'db_backup:backup_file:group:uploaded' => 'Uploaded backup files',
+	'db_backup:backup_file:no_files' => 'No backup files found',
 );
 add_translation('en', $english);

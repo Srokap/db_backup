@@ -1,6 +1,6 @@
 <?php
 
-if (db_backup::validateDataDir()) {
+if (db_backup::validateDataDir() && db_backup::validateUploadedDataDir()) {
 
 	$dependencies = db_backup::checkDependencies();
 	

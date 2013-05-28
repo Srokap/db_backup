@@ -174,7 +174,9 @@ class db_backup {
 	static function checkDependencies() {
 		db_backup::execSystemCommand('mysqldump -V', $code1);
 		db_backup::execSystemCommand('mysql -V', $code2);
-		return $code1 == 0 && $code2 == 0;
+		$result1 = db_backup::validateDataDir();
+		$result2 = db_backup::validateUploadedDataDir();
+		return $code1 == 0 && $code2 == 0 && $result1 && $result2;
 	}
 	
 	/**
@@ -182,6 +184,13 @@ class db_backup {
 	 */
 	static function getDataDir() {
 		return elgg_get_config('dataroot') . 'db_backup/';
+	}
+	
+	/**
+	 * @return string
+	 */
+	static function getUploadedDataDir() {
+		return self::getDataDir() . 'uploaded/';
 	}
 	
 	/**
@@ -201,12 +210,36 @@ class db_backup {
 	/**
 	 * @return bool
 	 */
-	static function validateDataDir() {
-		$path = self::getDataDir();
+	private static function validateDir($path) {
 		if (!is_dir($path) && !mkdir($path, 0777, true)) {
 			return false;
 		}
 		return is_writable($path);
+	}
+	
+	/**
+	 * @return bool
+	 */
+	static function validateDataDir() {
+		return self::validateDir(self::getDataDir());
+	}
+	
+	/**
+	 * @return bool
+	 */
+	static function validateUploadedDataDir() {
+		return self::validateDir(self::getUploadedDataDir());
+	}
+	
+	/**
+	 * Returns iterator over existing backup files
+	 * 
+	 * @return RegexIterator
+	 */
+	private static function getFileIterator($path) {
+		$i = new DirectoryIterator($path);
+		$i = new RegexIterator($i, "/.*\.sql/");
+		return $i;
 	}
 	
 	/**
@@ -215,9 +248,16 @@ class db_backup {
 	 * @return RegexIterator
 	 */
 	static function getBackupsFileIterator() {
-		$i = new DirectoryIterator(self::getDataDir());
-		$i = new RegexIterator($i, "/.*\.sql/");
-		return $i;
+		return self::getFileIterator(self::getDataDir());
+	}
+	
+	/**
+	 * Returns iterator over existing uploaded backup files
+	 * 
+	 * @return RegexIterator
+	 */
+	static function getUploadedBackupsFileIterator() {
+		return self::getFileIterator(self::getUploadedDataDir());
 	}
 	
 }
