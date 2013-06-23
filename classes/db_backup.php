@@ -53,7 +53,7 @@ class db_backup {
 			'name' => 'backup/db/save',
 			'href' => elgg_add_action_tokens_to_url('action/backup/db/save'),
 			'text' => elgg_echo('db_backup:button:quick'),
-			'class' => 'elgg-button elgg-button-action',
+			'link_class' => 'elgg-button elgg-button-action',
 		));
 		return $menu;
 	}
