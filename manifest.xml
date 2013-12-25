@@ -6,7 +6,7 @@
 	<category>admin</category>
 	<category>backup</category>
 	<description>Allows creating and restoring MySQL database backups</description>
-	<website>https://srokap.pl/</website>
+	<website>http://srokap.pl/</website>
 	<copyright>(C) Paweł Sroka 2013</copyright>
 	<license>MIT License</license>
 	

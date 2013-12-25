@@ -1,0 +1,24 @@
+{
+	"name": "srokap/db_backup",
+	"type": "elgg-plugin",
+	"description": "Elgg plugin, that allows creating and restoring MySQL database backups.",
+	"homepage": "https://github.com/Srokap/db_backup",
+	"minimum-stability": "stable",
+	"keywords": ["elgg", "plugin", "administration", "database", "backup", "mysql"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Paweł Sroka",
+			"email": "srokap@gmail.com"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/Srokap/db_backup/issues"
+	},
+	"autoload": {
+		"classmap": ["classes/"]
+	},
+	"require": {
+		"composer/installers": ">=1.0.8"
+	}
+}
