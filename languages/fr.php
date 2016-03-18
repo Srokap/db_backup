@@ -1,5 +1,5 @@
 <?php
-$french = array(
+return array(
 	'admin:backup' => "Backup",
 	'admin:backup:database' => "Backup de la base de données",
 	'db_backup:cli' => "Outils CLI",
@@ -15,4 +15,4 @@ $french = array(
 	'db_backup:action:restore:ok' => "La base de données a bien été restaurée à partir du fichier : %s",
 	'db_backup:action:restore:fail' => "Une erreur s'est produite lors de la restauration de la base de données. Erreur : %d: %s",
 );
-add_translation('fr', $french);
+

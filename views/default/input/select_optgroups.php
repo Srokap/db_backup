@@ -38,7 +38,7 @@ $optgroups = $vars['optgroups'];
 unset($vars['optgroups']);
 
 if (!$optgroups) {
-	echo elgg_view('input/dropdown', $vars);
+	echo elgg_view('input/select', $vars);
 } else {
 	
 	$options_values = $vars['options_values'];
