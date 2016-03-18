@@ -1,5 +1,5 @@
 <?php
-$english = array(
+return array(
 	'admin:backup' => 'Backup',
 	'admin:backup:database' => 'Database backup',
 	'db_backup:cli' => 'CLI tools',
@@ -18,4 +18,4 @@ $english = array(
 	'db_backup:backup_file:group:uploaded' => 'Uploaded backup files',
 	'db_backup:backup_file:no_files' => 'No backup files found',
 );
-add_translation('en', $english);
+
